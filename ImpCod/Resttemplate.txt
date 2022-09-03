@@ -1,0 +1,18 @@
+public List<ValidationRuleDTO> getValidationRuleResults(String businessprocess) throws JsonProcessingException {
+		
+		ResponseEntity<String> getForEntity = null;
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("businessprocess", String.valueOf(businessprocess));
+		
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		getForEntity = restTemplate.exchange(validationEngineUrl + "/getValidateResults",HttpMethod.GET, httpEntity, String.class);
+		String jsonString = getForEntity.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<ValidationRuleDTO> validationRuleDTO = objectMapper.readValue(jsonString, new TypeReference<List<ValidationRuleDTO>>(){});
+		
+		return validationRuleDTO;
+		
+	}
